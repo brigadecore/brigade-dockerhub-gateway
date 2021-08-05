@@ -1,0 +1,12 @@
+apiVersion: v2
+name: brigade-dockerhub-gateway
+description: |
+  The Brigade Docker Hub Gateway
+type: application
+version: 0.1.0
+appVersion: v0.1.0
+sources:
+- https://github.com/brigadecore/brigade-dockerhub-gateway
+maintainers:
+- name: The Brigade Maintainers
+  email: cncf-brigade-maintainers@lists.cncf.io
