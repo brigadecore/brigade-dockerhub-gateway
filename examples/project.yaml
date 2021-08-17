@@ -10,14 +10,14 @@ spec:
     types:
     - push
     qualifiers:
-      repo: krancour/foo
+      repo: example-org/example-repo
   workerTemplate:
     defaultConfigFiles:
       brigade.js: |-
         const { events } = require("@brigadecore/brigadier");
 
         events.on("brigade.sh/dockerhub", "push", () => {
-          console.log("Someone pushed an image to the krancour/foo repository!");
+          console.log("Someone pushed an image to the example-org/example-repo repository!");
         });
 
         events.process();
