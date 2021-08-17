@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/brigadecore/brigade/v2/v2/apiserver/schemas/project.json
+apiVersion: brigade.sh/v2-beta
+kind: Project
+metadata:
+  id: dockerhub-demo
+description: A project that demonstrates integration with Docker Hub
+spec:
+  eventSubscriptions:
+  - source: brigade.sh/dockerhub
+    types:
+    - push
+    qualifiers:
+      repo: krancour/foo
+  workerTemplate:
+    defaultConfigFiles:
+      brigade.js: |-
+        const { events } = require("@brigadecore/brigadier");
+
+        events.on("brigade.sh/dockerhub", "push", () => {
+          console.log("Someone pushed an image to the krancour/foo repository!");
+        });
+
+        events.process();
