@@ -115,7 +115,6 @@ brigade:
   ## this gateway, with proper permissions:
   ##
   ## $ brig service-account create --id brigade-dockerhub-gateway --description brigade-dockerhub-gateway
-  ## $ brig role grant READER --service-account brigade-dockerhub-gateway
   ## $ brig role grant EVENT_CREATOR --service-account brigade-dockerhub-gateway --source brigade.sh/dockerhub
   apiToken:
   ## Whether to ignore cert warning from the API server
