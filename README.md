@@ -1,6 +1,7 @@
 # Brigade Docker Hub Gateway
 
 [![codecov](https://codecov.io/gh/brigadecore/brigade-dockerhub-gateway/branch/main/graph/badge.svg?token=91B1J1VKQH)](https://codecov.io/gh/brigadecore/brigade-dockerhub-gateway)
+[![Go Report Card](https://goreportcard.com/badge/github.com/brigadecore/brigade-dockerhub-gateway)](https://goreportcard.com/report/github.com/brigadecore/brigade-dockerhub-gateway)
 
 This is a work-in-progress
 [Brigade 2](https://github.com/brigadecore/brigade/tree/v2)
