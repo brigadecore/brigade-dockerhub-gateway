@@ -16,6 +16,7 @@ func TestNewTokenFilterConfig(t *testing.T) {
 
 func TestAddToken(t *testing.T) {
 	const testToken = "foo"
+	// nolint: forcetypeassert
 	config := NewTokenFilterConfig().(*tokenFilterConfig)
 	require.Empty(t, config.hashedTokens)
 	config.AddToken(testToken)
@@ -33,7 +34,7 @@ func TestGetHashedTokens(t *testing.T) {
 
 func TestNewTokenFilter(t *testing.T) {
 	testConfig := NewTokenFilterConfig()
-	filter := NewTokenFilter(testConfig).(*tokenFilter)
+	filter := NewTokenFilter(testConfig).(*tokenFilter) // nolint: forcetypeassert
 	require.Equal(t, testConfig, filter.config)
 }
 

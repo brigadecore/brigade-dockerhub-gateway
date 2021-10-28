@@ -40,7 +40,7 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// This will always be a docker.BuildPayload:
-	dockerPayload := payload.(docker.BuildPayload)
+	dockerPayload := payload.(docker.BuildPayload) // nolint: forcetypeassert
 	if err := h.service.Handle(r.Context(), dockerPayload); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{"status": "internal server error"}`)) // nolint: errcheck
