@@ -50,9 +50,7 @@ func main() {
 		router.StrictSlash(true)
 		router.Handle(
 			"/events",
-			http.HandlerFunc( // Make a handler from a function
-				tokenFilter.Decorate(handler.ServeHTTP),
-			),
+			tokenFilter.Decorate(handler.ServeHTTP),
 		).Methods(http.MethodPost)
 		router.HandleFunc("/healthz", libHTTP.Healthz).Methods(http.MethodGet)
 		serverConfig, err := serverConfig()
