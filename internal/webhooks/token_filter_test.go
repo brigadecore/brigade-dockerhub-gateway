@@ -16,8 +16,8 @@ func TestNewTokenFilterConfig(t *testing.T) {
 
 func TestAddToken(t *testing.T) {
 	const testToken = "foo"
-	// nolint: forcetypeassert
-	config := NewTokenFilterConfig().(*tokenFilterConfig)
+	config, ok := NewTokenFilterConfig().(*tokenFilterConfig)
+	require.True(t, ok)
 	require.Empty(t, config.hashedTokens)
 	config.AddToken(testToken)
 	require.Len(t, config.hashedTokens, 1)
@@ -34,7 +34,8 @@ func TestGetHashedTokens(t *testing.T) {
 
 func TestNewTokenFilter(t *testing.T) {
 	testConfig := NewTokenFilterConfig()
-	filter := NewTokenFilter(testConfig).(*tokenFilter) // nolint: forcetypeassert
+	filter, ok := NewTokenFilter(testConfig).(*tokenFilter)
+	require.True(t, ok)
 	require.Equal(t, testConfig, filter.config)
 }
 
@@ -46,7 +47,7 @@ func TestTokenFilter(t *testing.T) {
 		name       string
 		filter     *tokenFilter
 		setup      func() *http.Request
-		assertions func(handlerCalled bool, rr *httptest.ResponseRecorder)
+		assertions func(handlerCalled bool, rr *http.Response)
 	}{
 		{
 			name: "valid token provided",
@@ -61,8 +62,8 @@ func TestTokenFilter(t *testing.T) {
 				req.URL.RawQuery = q.Encode()
 				return req
 			},
-			assertions: func(handlerCalled bool, rr *httptest.ResponseRecorder) {
-				require.Equal(t, http.StatusOK, rr.Code)
+			assertions: func(handlerCalled bool, r *http.Response) {
+				require.Equal(t, http.StatusOK, r.StatusCode)
 				require.True(t, handlerCalled)
 			},
 		},
@@ -76,8 +77,8 @@ func TestTokenFilter(t *testing.T) {
 				require.NoError(t, err)
 				return req
 			},
-			assertions: func(handlerCalled bool, rr *httptest.ResponseRecorder) {
-				require.Equal(t, http.StatusForbidden, rr.Code)
+			assertions: func(handlerCalled bool, r *http.Response) {
+				require.Equal(t, http.StatusForbidden, r.StatusCode)
 				require.False(t, handlerCalled)
 			},
 		},
@@ -94,8 +95,8 @@ func TestTokenFilter(t *testing.T) {
 				req.URL.RawQuery = q.Encode()
 				return req
 			},
-			assertions: func(handlerCalled bool, rr *httptest.ResponseRecorder) {
-				require.Equal(t, http.StatusForbidden, rr.Code)
+			assertions: func(handlerCalled bool, r *http.Response) {
+				require.Equal(t, http.StatusForbidden, r.StatusCode)
 				require.False(t, handlerCalled)
 			},
 		},
@@ -109,7 +110,9 @@ func TestTokenFilter(t *testing.T) {
 				handlerCalled = true
 				w.WriteHeader(http.StatusOK)
 			})(rr, req)
-			testCase.assertions(handlerCalled, rr)
+			res := rr.Result()
+			defer res.Body.Close()
+			testCase.assertions(handlerCalled, res)
 		})
 	}
 }
