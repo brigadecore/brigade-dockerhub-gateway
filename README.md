@@ -100,6 +100,10 @@ Edit `~/brigade-dockerhub-gateway-values.yaml`, making the following changes:
 
 * `brigade.apiToken`: Service account token from step 2
 
+* `service.type`: If you plan to enable ingress (advanced), you can leave this
+  as its default -- `ClusterIP`. If you do not plan to enable ingress, you
+  probably will want to change this value to `LoadBalancer`.
+
 * `tokens`: This field should define tokens that can be used by clients to send
   events (webhooks) to this gateway. Note that keys are completely ignored by
   the gateway and only the values (tokens) matter. The keys only serve as
@@ -114,13 +118,15 @@ $ helm install brigade-dockerhub-gateway \
     --version v0.2.0 \
     --create-namespace \
     --namespace brigade-dockerhub-gateway \
-    --values ~/brigade-dockerhub-gateway-values.yaml
+    --values ~/brigade-dockerhub-gateway-values.yaml \
+    --wait \
+    --timeout 300s
 ```
 
 ### 3. (RECOMMENDED) Create a DNS Entry
 
-If you installed the gateway without enabling support for an ingress controller,
-this command should help you find the gateway's public IP address:
+If you overrode defaults and set `service.type` to `LoadBalancer`, use this
+command to find the gateway's public IP address:
 
 ```console
 $ kubectl get svc brigade-dockerhub-gateway \
