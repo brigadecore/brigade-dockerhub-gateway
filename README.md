@@ -175,7 +175,7 @@ the gateway, provided they've originated from the fictitious
 `example-org/example-repo` repository (see the `repo` qualifier).
 
 ```yaml
-apiVersion: brigade.sh/v2-beta
+apiVersion: brigade.sh/v2
 kind: Project
 metadata:
   id: dockerhub-demo
@@ -202,7 +202,7 @@ spec:
 In the alternative example below, we subscribe _only_ to `push` events:
 
 ```yaml
-apiVersion: brigade.sh/v2-beta
+apiVersion: brigade.sh/v2
 kind: Project
 metadata:
   id: dockerhub-demo
