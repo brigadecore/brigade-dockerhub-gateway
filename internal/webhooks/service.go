@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/brigadecore/brigade/sdk/v2/core"
+	"github.com/brigadecore/brigade/sdk/v3"
 	"github.com/go-playground/webhooks/v6/docker"
 	"github.com/pkg/errors"
 )
@@ -17,12 +17,12 @@ type Service interface {
 }
 
 type service struct {
-	eventsClient core.EventsClient
+	eventsClient sdk.EventsClient
 }
 
 // NewService returns an implementation of the Service interface for handling
 // webhooks (events) from Docker Hub.
-func NewService(eventsClient core.EventsClient) Service {
+func NewService(eventsClient sdk.EventsClient) Service {
 	return &service{
 		eventsClient: eventsClient,
 	}
@@ -36,7 +36,7 @@ func (s *service) Handle(
 	if err != nil {
 		return errors.Wrap(err, "error marshaling payload")
 	}
-	event := core.Event{
+	event := sdk.Event{
 		Source: "brigade.sh/dockerhub",
 		Type:   "push",
 		Qualifiers: map[string]string{
@@ -44,6 +44,6 @@ func (s *service) Handle(
 		},
 		Payload: string(rawPayload),
 	}
-	_, err = s.eventsClient.Create(context.Background(), event)
+	_, err = s.eventsClient.Create(context.Background(), event, nil)
 	return errors.Wrap(err, "error emitting event(s) into Brigade")
 }
