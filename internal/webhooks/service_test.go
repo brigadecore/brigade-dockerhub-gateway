@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/brigadecore/brigade/sdk/v2/core"
-	coreTesting "github.com/brigadecore/brigade/sdk/v2/testing/core"
+	"github.com/brigadecore/brigade/sdk/v3"
+	sdkTesting "github.com/brigadecore/brigade/sdk/v3/testing"
 	"github.com/go-playground/webhooks/v6/docker"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/require"
@@ -15,8 +15,8 @@ func TestNewService(t *testing.T) {
 	s, ok := NewService(
 		// Totally unusable client that is enough to fulfill the dependencies for
 		// this test...
-		&coreTesting.MockEventsClient{
-			LogsClient: &coreTesting.MockLogsClient{},
+		&sdkTesting.MockEventsClient{
+			LogsClient: &sdkTesting.MockLogsClient{},
 		},
 	).(*service)
 	require.True(t, ok)
@@ -35,9 +35,13 @@ func TestHandle(t *testing.T) {
 		{
 			name: "error creating brigade event",
 			service: &service{
-				eventsClient: &coreTesting.MockEventsClient{
-					CreateFn: func(context.Context, core.Event) (core.EventList, error) {
-						return core.EventList{}, errors.New("something went wrong")
+				eventsClient: &sdkTesting.MockEventsClient{
+					CreateFn: func(
+						context.Context,
+						sdk.Event,
+						*sdk.EventCreateOptions,
+					) (sdk.EventList, error) {
+						return sdk.EventList{}, errors.New("something went wrong")
 					},
 				},
 			},
@@ -54,11 +58,12 @@ func TestHandle(t *testing.T) {
 		{
 			name: "success",
 			service: &service{
-				eventsClient: &coreTesting.MockEventsClient{
+				eventsClient: &sdkTesting.MockEventsClient{
 					CreateFn: func(
 						_ context.Context,
-						event core.Event,
-					) (core.EventList, error) {
+						event sdk.Event,
+						_ *sdk.EventCreateOptions,
+					) (sdk.EventList, error) {
 						require.Equal(t, "brigade.sh/dockerhub", event.Source)
 						require.Equal(t, "push", event.Type)
 						require.Equal(
@@ -69,7 +74,7 @@ func TestHandle(t *testing.T) {
 							event.Qualifiers,
 						)
 						require.NotEmpty(t, event.Payload)
-						return core.EventList{}, nil
+						return sdk.EventList{}, nil
 					},
 				},
 			},
