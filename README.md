@@ -87,7 +87,7 @@ a file you can modify:
 
 ```console
 $ helm inspect values oci://ghcr.io/brigadecore/brigade-dockerhub-gateway \
-    --version v0.3.0 > ~/brigade-dockerhub-gateway-values.yaml
+    --version v0.4.0 > ~/brigade-dockerhub-gateway-values.yaml
 ```
 
 Edit `~/brigade-dockerhub-gateway-values.yaml`, making the following changes:
@@ -115,7 +115,7 @@ following command to install the gateway using the above customizations:
 ```console
 $ helm install brigade-dockerhub-gateway \
     oci://ghcr.io/brigadecore/brigade-dockerhub-gateway
-    --version v0.3.0 \
+    --version v0.4.0 \
     --create-namespace \
     --namespace brigade-dockerhub-gateway \
     --values ~/brigade-dockerhub-gateway-values.yaml \
