@@ -173,7 +173,7 @@ publish-chart:
 	'
 
 ################################################################################
-# Targets to facilitate hacking on Brigade Docker Hub Gateway.                 #
+# Targets to facilitate hacking on this gateway                                #
 ################################################################################
 
 .PHONY: hack-kind-up
