@@ -90,7 +90,7 @@ of this:
 
 1. Using the URL `<ngrok URL>/events` and `insecure-dev-token` as the access
    token, complete the usual usage instructions from `README.md`, beginning with
-   this [this section](./README.md#4-create-webhooks).
+   this [this section](./README.md#creating-webhooks).
 
 > ⚠️&nbsp;&nbsp;We cannot guarantee that ngrok will work in all environments,
 > especially if you are behind a corporate firewall.
